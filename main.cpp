@@ -30,14 +30,16 @@ void trim(std::string &s) {
     rtrim(s);
 }
 
+auto open_file(const std::string &path_to_file) {
+    std::ifstream in(path_to_file);
+    if (!in) std::cerr << "Unable to open file, check if file path is correct";
+    else return in;
+}
 
 void load_file(std::vector<std::string> &vector, const std::string &path_to_file) {
     std::string line;
-    std::ifstream in(path_to_file);
-    if (!in) {
-        std::cerr << "Unable to open file, check if file path is correct";
-        return;
-    }
+
+    auto in = open_file(path_to_file);
 
     while (std::getline(in, line, ' ')) {
         if (std::all_of(line.begin(), line.end(), isspace)) continue; // ignore words contains only whitespaces
@@ -46,6 +48,17 @@ void load_file(std::vector<std::string> &vector, const std::string &path_to_file
     }
 
     in.close();
+}
+
+void count_lines_in_file(std::string &path_to_file) {
+    auto in = open_file(path_to_file);
+
+    std::string line;
+    long i;
+    for (i = 0; std::getline(in, line); ++i);
+
+    std::cout << "In file: " << path_to_file << " there are " << i << " lines\n";
+
 }
 
 void adjust_vector(std::vector<std::string> &arguments_vector) {
@@ -57,7 +70,13 @@ void adjust_vector(std::vector<std::string> &arguments_vector) {
             {"--chars",          "-c"},
             {"--words",          "-w"},
             {"--sorted",         "-s"},
-            {"--reverse-sorted", "-rs"}
+            {"--reverse-sorted", "-rs"},
+            {"--by-length",      "-l"},
+            {"--anagrams",       "-a"},
+            {"--output",         "-o"},
+            {"--palindromes",    "-p"},
+            {"--input",          "-i"}
+//            {"--reverse-sorted", "-rs"}
     };
 
     for (auto const&[key, val] : flag_aliases) {
@@ -65,27 +84,54 @@ void adjust_vector(std::vector<std::string> &arguments_vector) {
     }
 
     arguments_vector.erase(
-            std::unique(arguments_vector.begin(), arguments_vector.end(), [](std::string a, std::string b) {
-                return (a == b && (a == "-f" || a == "-l"));
-            }), arguments_vector.end());
+            std::unique(arguments_vector.begin(), arguments_vector.end(),
+                        [](const std::string &a, const std::string &b) {
+                            return (a == b && (a == "-f" || a == "-l"));
+                        }), arguments_vector.end());
 }
+
 
 void check_arguments_correctness(std::vector<std::string> &arguments_vector) {
 
     adjust_vector(arguments_vector);
+    bool f_flag_exist = false;
+    if (arguments_vector.empty()) {
+        std::cout << "help" << '\n';
+        return;
+    }
 
     for (int i = 0; i < arguments_vector.size(); i++) {
 
         if (arguments_vector[i][0] != '-') continue; // skip file path
 
-        // load input file
-        if (arguments_vector[i] == "-f" && arguments_vector[i + 1][0] == '-') {
-            std::cerr << "usage: -f [file path]\n";
-        } else {
-            load_file(input_vector, arguments_vector[i + 1]);
+        // -f flag
 
+        if (arguments_vector[i] == "-f") {
+            if (arguments_vector[i + 1][0] == '-') {
+                std::cerr << "The path to the file was not specified. Correct usage: '-f [file path]'\n";
+            } else {
+                load_file(input_vector, arguments_vector[i + 1]);
+                f_flag_exist = true;
+            }
+        }
+            // -n flag
 
-        };
+        else if (arguments_vector[i] == "-n") {
+            if (!f_flag_exist)
+                std::cerr << "The path to the file from which lines should be "
+                             "count was not specified. Correct usage: '-f [file path] -n'\n";
+            else {
+                auto it = std::find_if(arguments_vector.rbegin() + (arguments_vector.size() - i),
+                                       arguments_vector.rend(),
+                                       [](std::string &s) {
+                                           // search for the last file path preceded by the -f flag
+                                           return (s[0] != '-' && (&s)[-1] == "-f");
+                                       });
+
+                if (it != arguments_vector.rend()) // if path found
+                    count_lines_in_file(*it);
+            }
+        }
     }
 }
 
@@ -93,36 +139,8 @@ int main(int argc, char *argv[]) {
 
     auto arguments = std::vector<std::string>(argv + 1, argv + argc);
 
-
     check_arguments_correctness(arguments);
 
-
-    /* if (argc == 1) {
-         std::cout << "H\n";
-         return 0;
-     }
-
-     while (*++argv) {
-         if ((*argv)[0] == '-') {
-             if (strcmp(*argv, "--help") == 0) std::cout << "H\n";
-             else if (strcmp(*argv, "--file") == 0 || strcmp(*argv, "-f") == 0) std::cout << "F\n";
-             else if (strcmp(*argv, "--newlines") == 0 || strcmp(*argv, "-n") == 0) std::cout << "N\n";
-             else if (strcmp(*argv, "--digits") == 0 || strcmp(*argv, "-position") == 0) std::cout << "D\n";
-             else if (strcmp(*argv, "--numbers") == 0 || strcmp(*argv, "-dd") == 0) std::cout << "N\n";
-             else if (strcmp(*argv, "--chars") == 0 || strcmp(*argv, "-c") == 0) std::cout << "C\n";
-             else if (strcmp(*argv, "--words") == 0 || strcmp(*argv, "-w") == 0) std::cout << "W\n";
-             else if (strcmp(*argv, "--sorted") == 0 || strcmp(*argv, "-s") == 0) std::cout << "S\n";
-             else if (strcmp(*argv, "--reverse-sorted") == 0 || strcmp(*argv, "-rs") == 0) std::cout << "RS\n";
-             else if (strcmp(*argv, "--by-length") == 0 || strcmp(*argv, "-l") == 0) std::cout << "L\n";
-             else if (strcmp(*argv, "--anagrams") == 0 || strcmp(*argv, "-a") == 0) std::cout << "A\n";
-             else if (strcmp(*argv, "--output") == 0 || strcmp(*argv, "-o") == 0) std::cout << "O\n";
-             else if (strcmp(*argv, "--palindromes") == 0 || strcmp(*argv, "-p") == 0) std::cout << "P\n";
-             else if (strcmp(*argv, "--input") == 0 || strcmp(*argv, "-fi") == 0) std::cout << "FI\n";
-                 //            else if (strcmp(*argv, "--file") == 0 || strcmp(*argv, "-f") == 0) std::cout << "C\n"; // my own
-             else std::cout << "B";
-         }
-     }
- */
     return 0;
 }
 
