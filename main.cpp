@@ -7,8 +7,11 @@
 #include <sstream>
 #include <fstream>
 #include <map>
+#include <ctime>
 
-inline auto input_vector = std::vector<std::string>();
+#include "counters.h"
+#include "global.h"
+
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) {
@@ -37,14 +40,16 @@ auto open_file(const std::string &path_to_file) {
 }
 
 void load_file(std::vector<std::string> &vector, const std::string &path_to_file) {
-    std::string line;
 
     auto in = open_file(path_to_file);
 
-    while (std::getline(in, line, ' ')) {
-        if (std::all_of(line.begin(), line.end(), isspace)) continue; // ignore words contains only whitespaces
-        trim(line);
-        input_vector.emplace_back(line);
+    for (auto line = std::string(); std::getline(in, line);) {
+        std::stringstream ss(line);
+        for (auto word = std::string(); getline(ss, word, ' ');) {
+            if (std::all_of(word.begin(), word.end(), isspace)) continue; // ignore words contains only whitespaces
+            trim(word);
+            input_vector.emplace_back(word);
+        }
     }
 
     in.close();
@@ -100,6 +105,7 @@ void check_arguments_correctness(std::vector<std::string> &arguments_vector) {
         return;
     }
 
+
     for (int i = 0; i < arguments_vector.size(); i++) {
 
         if (arguments_vector[i][0] != '-') continue; // skip file path
@@ -110,8 +116,24 @@ void check_arguments_correctness(std::vector<std::string> &arguments_vector) {
             if (arguments_vector[i + 1][0] == '-') {
                 std::cerr << "The path to the file was not specified. Correct usage: '-f [file path]'\n";
             } else {
+
+                std::clock_t start;
+                double duration;
+                start = std::clock();
+
                 load_file(input_vector, arguments_vector[i + 1]);
                 f_flag_exist = true;
+
+                duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+                std::cout << "-f: " << duration << '\n';
+                std::cout << input_vector.size() << '\n';
+
+                start = std::clock();
+                std::sort(input_vector.begin(), input_vector.end());
+                duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+                std::cout << "-f: " << duration << '\n';
             }
         }
             // -n flag
@@ -131,8 +153,39 @@ void check_arguments_correctness(std::vector<std::string> &arguments_vector) {
                 if (it != arguments_vector.rend()) // if path found
                     count_lines_in_file(*it);
             }
+        } else if (arguments_vector[i] == "-d") {
+            if (!f_flag_exist)
+                std::cerr << "Correct usage: '-f [file path] -d'\n";
+            else {
+                std::clock_t start;
+                double duration;
+                start = std::clock();
+                auto counter = counting_methods::digit_counter();
+                counter.count();
+                std::cout << counter.get_amount() << '\n';
+                duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+                std::cout << "-d: " << duration << '\n';
+            }
+
+        } else if (arguments_vector[i] == "-dd") {
+            if (!f_flag_exist)
+                std::cerr << "Correct usage: '-f [file path] -dd'\n";
+            else {
+                std::clock_t start;
+                double duration;
+                start = std::clock();
+                auto counter = counting_methods::number_counter();
+                counter.count();
+                std::cout << counter.get_amount() << '\n';
+                duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+                std::cout << "-dd: " << duration << '\n';
+            }
+
         }
     }
+
 }
 
 int main(int argc, char *argv[]) {
