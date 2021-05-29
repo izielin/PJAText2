@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 
 
 #include "counters.h"
@@ -42,4 +43,18 @@ void counting_methods::digit_counter::count() {
 
 int counting_methods::digit_counter::get_amount() const {
     return amount;
+}
+
+int counting_methods::char_counter::get_amount() const {
+    return amount;
+}
+
+void counting_methods::char_counter::count(const std::string &path) {
+    std::ifstream in(path);
+
+    for (auto line = std::string(); std::getline(in, line);) {
+        amount += line.size();
+    }
+
+    in.close();
 }

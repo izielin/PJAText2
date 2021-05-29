@@ -11,39 +11,43 @@
 namespace counting_methods {
 
 
-    class counter {
-    public:
-        counter() = default;
-
-        ~counter() = default;
-
-        virtual void count() = 0;
-    };
-
-    class number_counter : public counter {
+    class number_counter {
     private:
         int amount = 0;
     public:
         number_counter() = default;
 
-        void count() override;
+        void count();
 
         int get_amount() const;
 
         ~number_counter() = default;
     };
 
-    class digit_counter : public counter {
+    class digit_counter {
     private:
         int amount = 0;
     public:
         digit_counter() = default;
 
-        void count() override;
+        void count();
 
         int get_amount() const;
 
         ~digit_counter() = default;
+    };
+
+    class char_counter {
+    private:
+        int amount = 0;
+    public:
+        char_counter() = default;
+
+        void count(const std::string &path);
+
+        int get_amount() const;
+
+        ~char_counter() = default;
     };
 
 }
