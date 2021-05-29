@@ -12,23 +12,22 @@
 #include "global.h"
 
 /**
-* @brief checkIsDouble - check inputString is double and if true return double result
-* @param inputString - string for checking
-* @param result - return double value
+* @brief check_is_double - check given string is double
+* @param input_string - string for checking
 * @return true if string is double, false if not
 */
-bool checkIsDouble(const std::string &s) {
-    char *endptr = 0;
-    strtod(s.c_str(), &endptr);
+bool check_is_double(const std::string &input_string) {
+    char *end_pointer = 0;
+    strtod(input_string.c_str(), &end_pointer);
 
-    if (*endptr != '\0' || endptr == s.c_str())
+    if (*end_pointer != '\0' || end_pointer == input_string.c_str())
         return false;
     return true;
 }
 
-
 void counting_methods::number_counter::count() {
-    amount = std::count_if(input_vector.begin(), input_vector.end(), checkIsDouble);
+    // TODO: not cover negative number
+    amount = std::count_if(input_vector.begin(), input_vector.end(), check_is_double);
 }
 
 int counting_methods::number_counter::get_amount() const {
@@ -36,6 +35,7 @@ int counting_methods::number_counter::get_amount() const {
 }
 
 void counting_methods::digit_counter::count() {
+    // TODO: not cover negative number
     std::for_each(input_vector.begin(), input_vector.end(), [&](auto &&s) {
         amount += std::count_if(s.begin(), s.end(), [](char &c) { return std::isdigit(c); });
     });
