@@ -55,7 +55,7 @@ void utility::load_file(const std::string &path_to_file) {
     in.close();
 }
 
-void utility::count_lines_in_file(std::string &path_to_file) {
+void utility::count_lines_in_file(std::string &path_to_file, stream_helper &output_stream) {
 
     auto in = open_file(path_to_file);
 
@@ -63,7 +63,7 @@ void utility::count_lines_in_file(std::string &path_to_file) {
     long i;
     for (i = 0; std::getline(in, line); ++i);
 
-    std::cout << "In file: " << path_to_file << " there are " << i << " lines\n";
+    output_stream << "In file: " << path_to_file << " there are " << i << " lines\n";
     in.close();
 }
 

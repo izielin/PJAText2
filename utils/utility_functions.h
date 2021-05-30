@@ -7,17 +7,18 @@
 
 #include <iostream>
 #include <set>
+#include "stream_helper.h"
 
 
 namespace utility {
     template<template<typename, typename...> class TT, typename Args>
-    void print_container(const TT<Args> &container) {
+    void print_container(const TT<Args> &container, stream_helper &output_stream) {
         for (auto it = container.begin(); it != container.end(); ++it) {
             if (it != container.begin())
-                std::cout << ", ";
-            std::cout << *it;
+                output_stream << ", ";
+            output_stream << *it;
         }
-        std::cout << '\n';
+        output_stream << '\n';
     }
 
     void ltrim(std::string &s);
@@ -30,7 +31,7 @@ namespace utility {
 
     void load_file(const std::string &path_to_file);
 
-    void count_lines_in_file(std::string &path_to_file);
+    void count_lines_in_file(std::string &path_to_file, stream_helper &output_stream);
 }
 
 

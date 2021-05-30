@@ -80,8 +80,9 @@ void load_flags_from_file(std::vector<std::string> &vector, const std::string &p
 }
 
 
-void invoke(std::vector<std::string> &arguments_vector) {
+void invoke(std::vector<std::string> &arguments_vector, stream_helper &output_stream) {
 
+    output_stream << 'a' << '\n';
 
     for (int i = 0; i < arguments_vector.size(); i++) {
 
@@ -91,33 +92,33 @@ void invoke(std::vector<std::string> &arguments_vector) {
 
             auto it = get_file_path(arguments_vector, i);
             if (it != arguments_vector.rend()) // if path found
-                utility::count_lines_in_file(*it);
+                utility::count_lines_in_file(*it, output_stream);
 
         } else if (arguments_vector[i] == "-d") {
             auto counter = counters::digit_counter();
             counter.count();
-            std::cout << counter.get_amount() << '\n';
+            output_stream << counter.get_amount() << '\n';
 
         } else if (arguments_vector[i] == "-dd") {
             auto counter = counters::number_counter();
             counter.count();
-            std::cout << counter.get_amount() << '\n';
+            output_stream << counter.get_amount() << '\n';
         } else if (arguments_vector[i] == "-c") {
             auto it = get_file_path(arguments_vector, i);
             if (it != arguments_vector.rend()) {
                 auto counter = counters::char_counter();
                 counter.count(*it);
-                std::cout << counter.get_amount() << '\n';
+                output_stream << counter.get_amount() << '\n';
             }
         } else if (arguments_vector[i] == "-w") {
-            std::cout << input_vector.size() << '\n';
+            output_stream << input_vector.size() << '\n';
         } else if (arguments_vector[i] == "-s") {
             if (arguments_vector[i - 1] != "-l")
                 std::sort(input_vector.begin(), input_vector.end());
             else
                 std::sort(input_vector.begin(), input_vector.end(),
                           [](std::string &a, std::string &b) { return a.length() < b.length(); });
-            utility::print_container(input_vector);
+            utility::print_container(input_vector, output_stream);
         } else if (arguments_vector[i] == "-rs") {
             if (arguments_vector[i - 1] != "-l")
                 std::sort(input_vector.begin(), input_vector.end(),
@@ -125,7 +126,7 @@ void invoke(std::vector<std::string> &arguments_vector) {
             else
                 std::sort(input_vector.begin(), input_vector.end(),
                           [](std::string &a, std::string &b) { return b.length() < a.length(); });
-            utility::print_container(input_vector);
+            utility::print_container(input_vector, output_stream);
         } else if (arguments_vector[i] == "-a") {
 
 
@@ -133,18 +134,39 @@ void invoke(std::vector<std::string> &arguments_vector) {
             collector.collect(arguments_vector, i + 1);
 
             for (auto it : collector.getAnagrams()) {
-                std::cout << "Word: " << it.first << " Anagrams: ";
-                utility::print_container(it.second);
+                output_stream << "Word: " << it.first << " Anagrams: ";
+                utility::print_container(it.second, output_stream);
             }
         } else if (arguments_vector[i] == "-p") {
 
             auto collector = collectors::palindromes_collector();
             collector.collect(arguments_vector, i + 1);
-            utility::print_container(collector.getPalindromes());
+            utility::print_container(collector.getPalindromes(), output_stream);
 
         }
 
     }
+}
+
+
+auto define_output_stream(std::vector<std::string> &arguments_vector, std::ofstream &output_file) {
+    auto it = std::find(arguments_vector.begin(), arguments_vector.end(), "-o");
+
+    if (it != arguments_vector.end()) {
+        output_file.open(*(it + 1), std::ios::app | std::ios::out);
+        if (!output_file) std::cerr << "Unable to open file, check if file path is correct";
+
+        stream_helper helper(output_file);
+
+        helper << 'b';
+
+        return helper;
+    }
+    stream_helper helper(std::cout);
+    helper << 'c';
+
+    return helper;
+
 }
 
 
@@ -169,12 +191,9 @@ void check::check_arguments_correctness(std::vector<std::string> &arguments_vect
         }
     }
 
+
     adjust_vector(arguments_vector);
-    utility::print_container(arguments_vector);
-
-
     bool f_flag_exist = false;
-
 
     for (int i = 0; i < arguments_vector.size(); i++) {
         try {
@@ -186,6 +205,14 @@ void check::check_arguments_correctness(std::vector<std::string> &arguments_vect
                 if (arguments_vector[i + 1][0] == '-')
                     // -f was called but without path
                     throw std::logic_error("The path to the file was not specified. Correct usage: '-f [file path]'");
+                else
+                    f_flag_exist = true;
+            }
+
+            if (arguments_vector[i] == "-o") {
+                if (arguments_vector[i + 1][0] == '-')
+                    // -f was called but without path
+                    throw std::logic_error("The path to the file was not specified. Correct usage: '-o [file path]'");
                 else
                     f_flag_exist = true;
             }
@@ -246,10 +273,17 @@ void check::check_arguments_correctness(std::vector<std::string> &arguments_vect
             return;
         }
     }
-    invoke(arguments_vector);
+
+    std::ofstream output_file;
+    auto helper = define_output_stream(arguments_vector, output_file);
+
+    helper << 'd' << '\n';
+    invoke(arguments_vector, helper);
 
 
 }
+
+
 
 
 

@@ -10,6 +10,7 @@ set(SOURCE_FILES
         collectors/palindromes_collector.cpp
         collectors/passed_words_collector.cpp
         collectors/anagrams_collector.cpp
+        utils/stream_helper.h
         utils/check_arguments_correctness.cpp
-        utils/utility_functions.cpp)
+        utils/utility_functions.cpp utils/stream_helper.h)
 add_executable(PJAText2 ${SOURCE_FILES})
