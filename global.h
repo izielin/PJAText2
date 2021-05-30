@@ -5,7 +5,7 @@
 #ifndef PJATEXT2_GLOBAL_H
 #define PJATEXT2_GLOBAL_H
 
-inline auto input_vector = std::vector<std::string>();
+inline std::vector<std::string> input_vector;
 
 
 #endif //PJATEXT2_GLOBAL_H

@@ -8,9 +8,7 @@
 #include <iostream>
 
 
-namespace counting_methods {
-
-
+namespace counters {
     class number_counter {
     private:
         int amount = 0;
@@ -49,7 +47,6 @@ namespace counting_methods {
 
         ~char_counter() = default;
     };
-
 }
 
 #endif //PJATEXT2_COUNTERS_H

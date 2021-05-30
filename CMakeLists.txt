@@ -3,5 +3,13 @@ project(PJAText2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES main.cpp counters.cpp counters.h global.h)
+set(SOURCE_FILES
+        global.h
+        main.cpp
+        counters/counters.cpp
+        collectors/palindromes_collector.cpp
+        collectors/passed_words_collector.cpp
+        collectors/anagrams_collector.cpp
+        utils/check_arguments_correctness.cpp
+        utils/utility_functions.cpp)
 add_executable(PJAText2 ${SOURCE_FILES})
