@@ -13,7 +13,7 @@
 #include "../collectors/palindromes_collector.h"
 
 
-void n_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void n_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     auto it = container.find_next_path(position);
     if (it != container.getArguments().rend()) // if path found
         utility::count_lines_in_file(*it, output_stream);
@@ -31,7 +31,7 @@ void dd_flag(stream_helper &output_stream) {
     output_stream << counter.get_amount() << '\n';
 }
 
-void c_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void c_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     auto it = container.find_next_path(position);
     if (it != container.getArguments().rend()) {
         auto counter = counters::char_counter();
@@ -40,7 +40,7 @@ void c_flag(arguments_container &container, int position, stream_helper &output_
     }
 }
 
-void s_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void s_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     if (container[position - 1] != "-l")
         std::sort(input_vector.begin(), input_vector.end());
     else
@@ -49,7 +49,7 @@ void s_flag(arguments_container &container, int position, stream_helper &output_
     utility::print_container(input_vector, output_stream);
 }
 
-void rs_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void rs_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     if (container[position - 1] != "-l")
         std::sort(input_vector.begin(), input_vector.end(),
                   [](std::string &a, std::string &b) { return b < a; });
@@ -59,7 +59,7 @@ void rs_flag(arguments_container &container, int position, stream_helper &output
     utility::print_container(input_vector, output_stream);
 }
 
-void a_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void a_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     auto collector = collectors::anagrams_collector();
     collector.collect(container, position + 1);
 
@@ -69,13 +69,13 @@ void a_flag(arguments_container &container, int position, stream_helper &output_
     }
 }
 
-void p_flag(arguments_container &container, int position, stream_helper &output_stream) {
+void p_flag(containers::argument_container &container, int position, stream_helper &output_stream) {
     auto collector = collectors::palindromes_collector();
     collector.collect(container, position + 1);
     utility::print_container(collector.getPalindromes(), output_stream);
 }
 
-/*void m_flag(arguments_container &container, int position, stream_helper &output_stream) {
+/*void m_flag(args_vector &container, int position, stream_helper &output_stream) {
     auto predicate = [](std::string &s) { return (s[0] != '-' && (&s)[-1] == "-f"); };
 
     auto it = reverse_find(arguments_vector, position, predicate);
@@ -86,7 +86,7 @@ void p_flag(arguments_container &container, int position, stream_helper &output_
 
 }*/
 
-void invoke::invoke_functions(arguments_container &arguments_vector, stream_helper &output_stream) {
+void invoke::invoke_functions(containers::argument_container &arguments_vector, stream_helper &output_stream) {
     for (int i = 0; i < arguments_vector.getArguments().size(); i++) {
         if (arguments_vector[i][0] != '-') continue; // skip file path
 

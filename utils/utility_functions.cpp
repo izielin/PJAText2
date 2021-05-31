@@ -32,8 +32,14 @@ void utility::trim(std::string &s) {
 
 std::ifstream utility::open_file(const std::string &path_to_file) {
     std::ifstream in(path_to_file);
-    if (!in) std::cerr << "Unable to open file, check if file path is correct";
-    else return in;
+    try {
+        if (!in) throw std::logic_error("Unable to open file, check if file path is correct");
+        else return in;
+    } catch (std::logic_error e) {
+        std::cerr << e.what() << '\n';
+        exit(-1);
+    }
+
 }
 
 

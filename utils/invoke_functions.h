@@ -8,11 +8,11 @@
 #include <iostream>
 #include <vector>
 #include "stream_helper.h"
-#include "../custom_containers/arguments_container.h"
+#include "../custom_containers/container.h"
 
 namespace invoke {
 
-    void invoke_functions(arguments_container &arguments_vector, stream_helper &output_stream);
+    void invoke_functions(containers::argument_container &arguments_vector, stream_helper &output_stream);
 
 
 }

@@ -12,14 +12,7 @@
 
 namespace utility {
     template<template<typename, typename...> class TT, typename Args>
-    void print_container(const TT<Args> &container, stream_helper &output_stream) {
-        for (auto it = container.begin(); it != container.end(); ++it) {
-            if (it != container.begin())
-                output_stream << ", ";
-            output_stream << *it;
-        }
-        output_stream << '\n';
-    }
+    void print_container(const TT<Args> &container, stream_helper &output_stream);
 
     void ltrim(std::string &s);
 
@@ -36,5 +29,6 @@ namespace utility {
     void load_file_by_line(std::vector<std::string> &vector, const std::string &path);
 }
 
+#include "utility_functions.tpp"
 
 #endif //PJATEXT2_UTILITY_FUNCTIONS_H

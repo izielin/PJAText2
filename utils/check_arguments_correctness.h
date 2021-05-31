@@ -7,11 +7,11 @@
 
 #include <iostream>
 #include "stream_helper.h"
-#include "../custom_containers/arguments_container.h"
+#include "../custom_containers/container.h"
 
 
 namespace check {
-    void check_arguments_correctness(arguments_container &arguments);
+    void check_arguments_correctness(containers::argument_container &arguments);
 
 
 }

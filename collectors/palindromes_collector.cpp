@@ -27,7 +27,7 @@ bool predicate(const std::string &word) {
             std::find(input_vector.begin(), input_vector.end(), word) != input_vector.end());
 }
 
-void collectors::palindromes_collector::collect(arguments_container &container, int position) {
+void collectors::palindromes_collector::collect(containers::argument_container &container, int position) {
     auto filtered_words = container.return_words_arguments(position);
 
     std::copy_if(filtered_words.begin(), filtered_words.end(),

@@ -12,12 +12,12 @@
 #include "check_arguments_correctness.h"
 #include "utility_functions.h"
 #include "invoke_functions.h"
-#include "../custom_containers/arguments_container.h"
+#include "../custom_containers/container.h"
 
 using flag_properties_map = std::map<std::string, std::pair<std::string, std::string>>;
 
 namespace { //
-    void adjust_vector(arguments_container &container, flag_properties_map &flag_properties) {
+    void adjust_vector(containers::argument_container &container, flag_properties_map &flag_properties) {
 
         auto &arguments_vector = container.getArguments();
 
@@ -33,7 +33,7 @@ namespace { //
     }
 
 
-    auto define_output_stream(arguments_container &container, std::ofstream &output_file) {
+    auto define_output_stream(containers::argument_container &container, std::ofstream &output_file) {
         auto &arguments_vector = container.getArguments();
 
         auto it = std::find(arguments_vector.begin(), arguments_vector.end(), "-o");
@@ -47,7 +47,7 @@ namespace { //
         return helper;
     }
 
-    void check_i_flag(arguments_container &container,
+    void check_i_flag(containers::argument_container &container,
                       flag_properties_map &flag_properties) {
         if (container[0] == "-i") {
             if (container.getArguments().size() == 1) {
@@ -63,7 +63,7 @@ namespace { //
     }
 
 
-    void check_last_flags(int position, arguments_container &container,
+    void check_last_flags(int position, containers::argument_container &container,
                           flag_properties_map flag_properties, bool exist) {
         if (!exist)
             throw std::logic_error("The path to the file was not specified.");
@@ -78,7 +78,7 @@ namespace { //
 
 
     void
-    check_loop(arguments_container &container, flag_properties_map &flag_properties) {
+    check_loop(containers::argument_container &container, flag_properties_map &flag_properties) {
         std::vector<std::string> dependent_on_flag_f = {"-n", "-d", "-dd", "-c", "-w", "-s", "-rs"};
         bool f_flag_exist = false;
         for (int i = 0; i < container.getArguments().size(); i++) {
@@ -110,7 +110,7 @@ namespace { //
     }
 }
 
-void check::check_arguments_correctness(arguments_container &arguments) {
+void check::check_arguments_correctness(containers::argument_container &arguments) {
 
     flag_properties_map flag_properties = {
             {"-f",  std::make_pair("--file",
