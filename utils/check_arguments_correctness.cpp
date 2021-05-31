@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <array>
+#include <sstream>
 
 #include "check_arguments_correctness.h"
 #include "utility_functions.h"
@@ -110,37 +111,31 @@ namespace { //
     }
 }
 
+flag_properties_map load_flags_properties(std::string &path) {
+    auto map = flag_properties_map();
+    auto in = utility::open_file(path);
+
+    std::string substr, line;
+    std::vector<std::string> vec = {};
+
+    for (; std::getline(in, line);) {
+        std::stringstream ss(line);
+
+        for (; getline(ss, substr, ';');)
+            vec.push_back(substr);
+
+        map[vec[0]] = std::make_pair(vec[1], vec[2]);
+        vec.clear();
+    }
+
+    return map;
+
+}
+
 void check::check_arguments_correctness(containers::argument_container &arguments) {
 
-    flag_properties_map flag_properties = {
-            {"-f",  std::make_pair("--file",
-                                   "The path to the input file was not specified. Correct usage: '-f [file path]'")},
-            {"-n",  std::make_pair("--newlines",
-                                   "Cannot count lines in file.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -n'")},
-            {"-d",  std::make_pair("--digits",
-                                   "Cannot count digits in file.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -d'")},
-            {"-dd", std::make_pair("--numbers",
-                                   "Cannot count numbers in file.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -dd'")},
-            {"-c",  std::make_pair("--chars",
-                                   "Cannot count chars in file.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -c'")},
-            {"-w",  std::make_pair("--words",
-                                   "Cannot count words in file.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -w'")},
-            {"-s",  std::make_pair("--sorted",
-                                   "Cannot return correct output.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -s'")},
-            {"-rs", std::make_pair("--reverse-sorted",
-                                   "Cannot return correct output.\nCause: The path to the input file was not specified.\nCorrect usage: '-f [file path] -rs'")},
-            {"-a",  std::make_pair("--anagrams",
-                                   "Wrong order of collected_words, -a flag should be given last.\n Correct usage: '-f [file path] [flags] -a [anagram to find]'")},
-            {"-o",  std::make_pair("--output",
-                                   "The path to the output file was not specified. Correct usage: '-o [file path]'")},
-            {"-p",  std::make_pair("--palindromes",
-                                   "Wrong order of collected_words, -p flag should be given last.\n Correct usage: '-f [file path] [flags] -p [palindromes to find]'")},
-            {"-i",  std::make_pair("--input",
-                                   "Wrong number of collected_words, -i flag should be given as only flag.\nCorrect usage: '-i [file path]'")},
-            {"-m",  std::make_pair("--merge",
-                                   "The path to the output file was not specified. Correct usage: '-m [file path]'")},
-            {"-l",  std::make_pair("--by-length", "")}
-    };
+    std::string path = "../inputs/flag_properties.txt";
+    auto flag_properties = load_flags_properties(path);
 
     if (arguments.getArguments().empty()) {
         std::cout << "help" << '\n';

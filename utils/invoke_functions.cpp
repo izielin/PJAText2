@@ -87,6 +87,7 @@ void p_flag(containers::argument_container &container, int position, stream_help
 }*/
 
 void invoke::invoke_functions(containers::argument_container &arguments_vector, stream_helper &output_stream) {
+
     for (int i = 0; i < arguments_vector.getArguments().size(); i++) {
         if (arguments_vector[i][0] != '-') continue; // skip file path
 
