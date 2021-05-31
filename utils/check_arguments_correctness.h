@@ -7,10 +7,13 @@
 
 #include <iostream>
 #include "stream_helper.h"
+#include "../custom_containers/arguments_container.h"
 
 
 namespace check {
-    void check_arguments_correctness(std::vector<std::string> &arguments_vector);
+    void check_arguments_correctness(arguments_container &arguments);
+
+
 }
 
 

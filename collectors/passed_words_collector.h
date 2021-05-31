@@ -14,7 +14,7 @@ namespace collectors {
     class passed_words_collector {
     private:
 
-        std::set<std::string> arguments;
+        std::set<std::string> collected_words;
     public:
 
         passed_words_collector() = default;
@@ -22,7 +22,7 @@ namespace collectors {
 
         void collect(std::vector<std::string> &vector_searched, int position);
 
-        const std::set<std::string> &getArguments() const;
+        std::set<std::string> &getCollectedWords();
 
         ~passed_words_collector() = default;
     };

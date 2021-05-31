@@ -12,14 +12,14 @@
 #include "../global.h"
 
 /**
-* @brief check_is_double - check given string is double
+* \brief check_is_double - check given string is double
 * @param input_string - string for checking
 * @return true if string is double, false if not
 */
 bool check_is_double(const std::string &input_string) {
     char *endptr; //address of the character at which conversion has finished
-    strtod(input_string.c_str(), &endptr);
-    return input_string.c_str() != endptr;
+    strtod(input_string.c_str(), &endptr); // if conversion fails value of endptr end will be set to str
+    return input_string.c_str() != endptr; // if input_string.c_str() == endptr -> conversion fails
 }
 
 void counters::number_counter::count() {

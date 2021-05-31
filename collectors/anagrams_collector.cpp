@@ -8,6 +8,7 @@
 #include "passed_words_collector.h"
 #include "anagrams_collector.h"
 #include "../global.h"
+#include "../custom_containers/arguments_container.h"
 
 #define NO_OF_CHARS 256
 
@@ -15,21 +16,18 @@ const std::map<std::string, std::set<std::string>> &collectors::anagrams_collect
     return anagrams;
 }
 
-
 /**
  * \brief Function check whether two strings are anagram of each other
- *
- * The function iterates over the given words. Increase the value in the count array
- * for the characters in str1 and decrease it for the characters in str2.
- * If the numbers are all 0, then these two strings are anagrams of each other.
- *
  * @param word_1
  * @param word_2
  * @return
  */
-
-
 auto are_anagram(const std::string &word_1, const std::string &word_2) {
+    /* The function iterates over the given words. Increase the value in the count array
+     * for the characters in str1 and decrease it for the characters in str2.
+     * If the numbers are all 0, then these two strings are anagrams of each other.
+    */
+
     int count[NO_OF_CHARS] = {0};
 
     // If strings have different length return false
@@ -48,14 +46,11 @@ auto are_anagram(const std::string &word_1, const std::string &word_2) {
     return true;
 }
 
-
-void collectors::anagrams_collector::collect(std::vector<std::string> &vector_searched, int position) {
+void collectors::anagrams_collector::collect(arguments_container &container, int position) {
     std::set<std::string> matching_words;
 
-    auto passed = passed_words_collector();
-    passed.collect(vector_searched, position);
-
-    for (auto &&word : passed.getArguments()) {
+    auto passed = container.return_words_arguments(position);
+    for (auto &&word : passed) {
         for (auto &&item : input_vector) {
             if (are_anagram(word.c_str(), item.c_str())) {
                 std::transform(item.begin(), item.end(), item.begin(),
@@ -67,6 +62,4 @@ void collectors::anagrams_collector::collect(std::vector<std::string> &vector_se
         anagrams.insert(std::make_pair(word, matching_words));
         matching_words.clear();
     }
-
-
 }

@@ -10,14 +10,14 @@
 #include "utility_functions.h"
 #include "../global.h"
 
-// trim from start (in place)
+// trim from start
 void utility::ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
         return !std::isspace(ch);
     }));
 }
 
-// trim from end (in place)
+// trim from end
 void utility::rtrim(std::string &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
         return !std::isspace(ch);
@@ -36,7 +36,8 @@ std::ifstream utility::open_file(const std::string &path_to_file) {
     else return in;
 }
 
-void utility::load_file(const std::string &path_to_file) {
+
+void utility::load_file_by_words(const std::string &path_to_file) {
     if (input_vector.size() != 0) input_vector.clear(); // clear vector if new file was loaded
 
     input_vector.emplace_back("a");
@@ -49,14 +50,24 @@ void utility::load_file(const std::string &path_to_file) {
             if (std::all_of(word.begin(), word.end(), isspace)) continue; // ignore words contains only whitespaces
             trim(word);
             input_vector.emplace_back(word);
-
         }
     }
     in.close();
 }
 
-void utility::count_lines_in_file(std::string &path_to_file, stream_helper &output_stream) {
+void utility::load_file_by_line(std::vector<std::string> &vector, const std::string &path) {
+    auto in = open_file(path);
 
+    for (auto line = std::string(); std::getline(in, line, ' ');) {
+        if (std::all_of(line.begin(), line.end(), isspace)) continue; // ignore words contains only whitespaces
+        utility::trim(line);
+        vector.emplace_back(line);
+    }
+
+    in.close();
+}
+
+void utility::count_lines_in_file(std::string &path_to_file, stream_helper &output_stream) {
     auto in = open_file(path_to_file);
 
     std::string line;

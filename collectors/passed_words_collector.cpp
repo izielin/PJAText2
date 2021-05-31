@@ -8,9 +8,9 @@
 
 void collectors::passed_words_collector::collect(std::vector<std::string> &vector_searched, int position) {
     for (auto iterator = vector_searched.begin() + position;
-         iterator != vector_searched.end(); arguments.insert(*iterator++));
+         iterator != vector_searched.end(); collected_words.insert(*iterator++));
 }
 
-const std::set<std::string> &collectors::passed_words_collector::getArguments() const {
-    return arguments;
+std::set<std::string> &collectors::passed_words_collector::getCollectedWords() {
+    return collected_words;
 }

@@ -29,9 +29,11 @@ namespace utility {
 
     std::ifstream open_file(const std::string &path_to_file);
 
-    void load_file(const std::string &path_to_file);
+    void load_file_by_words(const std::string &path_to_file);
 
     void count_lines_in_file(std::string &path_to_file, stream_helper &output_stream);
+
+    void load_file_by_line(std::vector<std::string> &vector, const std::string &path);
 }
 
 
