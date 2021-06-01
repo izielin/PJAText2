@@ -8,7 +8,6 @@
 #include <regex>
 
 #include "counters.h"
-#include "../global.h"
 
 
 bool check_is_double(const std::string &input_string) {
@@ -17,16 +16,16 @@ bool check_is_double(const std::string &input_string) {
     return (std::regex_match(input_string, num_regex));
 }
 
-void counters::number_counter::count() {
-    amount = std::count_if(input_vector.begin(), input_vector.end(), check_is_double);
+void counters::number_counter::count(std::vector<std::string> &input) {
+    amount = std::count_if(input.begin(), input.end(), check_is_double);
 }
 
 int counters::number_counter::get_amount() const {
     return amount;
 }
 
-void counters::digit_counter::count() {
-    std::for_each(input_vector.begin(), input_vector.end(), [&](auto &&s) {
+void counters::digit_counter::count(std::vector<std::string> &input) {
+    std::for_each(input.begin(), input.end(), [&](auto &&s) {
         amount += std::count_if(s.begin(), s.end(), [](char &c) { return std::isdigit(c); });
     });
 }

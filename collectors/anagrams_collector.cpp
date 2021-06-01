@@ -7,8 +7,6 @@
 
 #include "passed_words_collector.h"
 #include "anagrams_collector.h"
-#include "../global.h"
-#include "../custom_containers/container.h"
 
 #define NO_OF_CHARS 256
 
@@ -40,13 +38,13 @@ auto are_anagram(const std::string &word_1, const std::string &word_2) {
     }
 
     // check if there is any non-zero value in array
-    for (int i = 0; i < NO_OF_CHARS; i++)
-        if (count[i])
-            return false;
+    for (int i : count)
+        if (i) return false;
     return true;
 }
 
-void collectors::anagrams_collector::collect(containers::argument_container &container, int position) {
+void collectors::anagrams_collector::collect(std::vector<std::string> &input_vector,
+                                             containers::argument_container &container, int position) {
     std::set<std::string> matching_words;
 
     auto passed = container.return_words_arguments(position);

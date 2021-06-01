@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <set>
-#include "../custom_containers/container.h"
+#include "../custom_containers/argument_container.h"
 
 namespace collectors {
     class palindromes_collector {
@@ -16,7 +16,7 @@ namespace collectors {
     public:
         palindromes_collector() = default;
 
-        void collect(containers::argument_container &container, int position);
+        void collect(std::vector<std::string> &input, containers::argument_container &container, int position);
 
         const std::set<std::string> &getPalindromes() const;
 

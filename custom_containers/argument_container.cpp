@@ -5,10 +5,10 @@
 #include <iostream>
 #include <vector>
 
-#include "container.h"
+#include "argument_container.h"
 
 namespace containers {
-    std::vector<std::string>::reverse_iterator argument_container::find_next_path(int index) {
+    std::vector<std::string>::reverse_iterator argument_container::reverse_find_path(int index) {
         auto &&predicate = [](std::string &s) { return (s[0] != '-' && (&s)[-1] == "-f"); };
         return reverse_find(index, predicate);
     }

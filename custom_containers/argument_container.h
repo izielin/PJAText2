@@ -2,8 +2,8 @@
 // Created by mmich on 31.05.2021.
 //
 
-#ifndef PJATEXT2_CONTAINER_H
-#define PJATEXT2_CONTAINER_H
+#ifndef PJATEXT2_ARGUMENT_CONTAINER_H
+#define PJATEXT2_ARGUMENT_CONTAINER_H
 
 #include <iostream>
 #include <utility>
@@ -26,7 +26,7 @@ namespace containers {
         template<typename F>
         inline auto forward_find(int index, F &&predicate);
 
-        std::vector<std::string>::reverse_iterator find_next_path(int index);
+        std::vector<std::string>::reverse_iterator reverse_find_path(int index);
 
         std::set<std::string> return_words_arguments(int position);
 
@@ -39,6 +39,6 @@ namespace containers {
     };
 }
 
-#include "container.tpp"
+#include "argument_container.tpp"
 
-#endif //PJATEXT2_CONTAINER_H
+#endif //PJATEXT2_ARGUMENT_CONTAINER_H

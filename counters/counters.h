@@ -15,7 +15,7 @@ namespace counters {
     public:
         number_counter() = default;
 
-        void count();
+        void count(std::vector<std::string> &input);
 
         int get_amount() const;
 
@@ -28,7 +28,7 @@ namespace counters {
     public:
         digit_counter() = default;
 
-        void count();
+        void count(std::vector<std::string> &input);
 
         int get_amount() const;
 

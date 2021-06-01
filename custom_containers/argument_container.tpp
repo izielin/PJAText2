@@ -2,8 +2,8 @@
 // Created by mmich on 31.05.2021.
 //
 
-#ifndef PJATEXT2_CONTAINER_TPP
-#define PJATEXT2_CONTAINER_TPP
+#ifndef PJATEXT2_ARGUMENT_CONTAINER_TPP
+#define PJATEXT2_ARGUMENT_CONTAINER_TPP
 
 
 #include <iostream>
@@ -25,4 +25,4 @@ namespace containers {
         return std::find_if(args_vector.begin() + index, args_vector.end(), predicate);
     }
 }
-#endif // PJATEXT2_CONTAINER_TPP
+#endif // PJATEXT2_ARGUMENT_CONTAINER_TPP

@@ -101,7 +101,7 @@ namespace { //
 
             } else if (container[i] == "-a" || container[i] == "-p") {
                 check_last_flags(i, container, flag_properties, f_flag_exist);
-            } else {
+            } else if (flag_properties.find(container[i]) == flag_properties.end()) {
                 throw std::logic_error("The wrong flag or its alias was specified.\n"
                                        "Check the list of collected_words passed or call the application with the alias "
                                        "'--help' for more information. ");

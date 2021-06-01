@@ -8,7 +8,6 @@
 #include <fstream>
 
 #include "utility_functions.h"
-#include "../global.h"
 
 // trim from start
 void utility::ltrim(std::string &s) {
@@ -43,10 +42,8 @@ std::ifstream utility::open_file(const std::string &path_to_file) {
 }
 
 
-void utility::load_file_by_words(const std::string &path_to_file) {
-    if (input_vector.size() != 0) input_vector.clear(); // clear vector if new file was loaded
-
-    input_vector.emplace_back("a");
+void utility::load_file_by_words(containers::enhanced_vector &container, const std::string &path_to_file) {
+    if (container.getDataVector().size() != 0) container.getDataVector().clear(); // clear vector if new file was loaded
 
     auto in = open_file(path_to_file);
 
@@ -55,7 +52,7 @@ void utility::load_file_by_words(const std::string &path_to_file) {
         for (auto word = std::string(); getline(ss, word, ' ');) {
             if (std::all_of(word.begin(), word.end(), isspace)) continue; // ignore words contains only whitespaces
             trim(word);
-            input_vector.emplace_back(word);
+            container.getDataVector().emplace_back(word);
         }
     }
     in.close();

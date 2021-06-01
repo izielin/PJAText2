@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-pedantic")
 
 set(SOURCE_FILES
-        global.h
         main.cpp
         counters/counters.cpp
         collectors/palindromes_collector.cpp
@@ -13,5 +12,5 @@ set(SOURCE_FILES
         collectors/anagrams_collector.cpp
         utils/check_arguments_correctness.cpp
         utils/utility_functions.cpp
-        utils/invoke_functions.cpp custom_containers/container.cpp)
+        utils/invoke_functions.cpp custom_containers/argument_container.cpp custom_containers/enhanced_vector.cpp custom_containers/enhanced_vector.h)
 add_executable(PJAText2 ${SOURCE_FILES})

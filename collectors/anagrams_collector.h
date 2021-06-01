@@ -9,7 +9,7 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "../custom_containers/container.h"
+#include "../custom_containers/argument_container.h"
 
 namespace collectors {
     class anagrams_collector {
@@ -18,7 +18,7 @@ namespace collectors {
     public:
         anagrams_collector() = default;
 
-        void collect(containers::argument_container &container, int position);
+        void collect(std::vector<std::string> &input_vector, containers::argument_container &container, int position);
 
         const std::map<std::string, std::set<std::string>> &getAnagrams() const;
 
