@@ -13,7 +13,6 @@
 #include "check_arguments_correctness.h"
 #include "utility_functions.h"
 #include "invoke_functions.h"
-#include "../custom_containers/container.h"
 
 using flag_properties_map = std::map<std::string, std::pair<std::string, std::string>>;
 
