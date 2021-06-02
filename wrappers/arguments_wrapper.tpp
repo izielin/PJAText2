@@ -1,9 +1,5 @@
-//
-// Created by mmich on 31.05.2021.
-//
-
-#ifndef PJATEXT2_ARGUMENT_CONTAINER_TPP
-#define PJATEXT2_ARGUMENT_CONTAINER_TPP
+#ifndef PJATEXT2_ARGUMENTS_WRAPPER_TPP
+#define PJATEXT2_ARGUMENTS_WRAPPER_TPP
 
 
 #include <iostream>
@@ -12,17 +8,21 @@
 #include <algorithm>
 
 #include "../collectors/passed_words_collector.h"
+#include "arguments_wrapper.h"
 
-namespace containers {
+
+namespace wrappers {
 
     template<typename F>
-    auto argument_container::reverse_find(int index, F &&predicate) {
+    auto arguments_wrapper::reverse_find(int index, F &&predicate) {
         return std::find_if(args_vector.rbegin() + (args_vector.size() - index), args_vector.rend(), predicate);
     }
 
     template<typename F>
-    auto argument_container::forward_find(int index, F &&predicate) {
+    auto arguments_wrapper::forward_find(int index, F &&predicate) {
         return std::find_if(args_vector.begin() + index, args_vector.end(), predicate);
     }
+
+
 }
-#endif // PJATEXT2_ARGUMENT_CONTAINER_TPP
+#endif

@@ -9,6 +9,6 @@
 -a;--anagrams;Wrong order of collected_words, -a flag should be given last. Correct usage: '-f [file path] [flags] -a [anagram to find]'
 -o;--output;The path to the output file was not specified. Correct usage: '-o [file path]'
 -p;--palindromes;Wrong order of collected_words, -p flag should be given last. Correct usage: '-f [file path] [flags] -p [palindromes to find]'
--i;--input;Wrong number of collected_words, -i flag should be given as only flag.Correct usage: '-i [file path]'
--m;--merge;The path to the output file was not specified. Correct usage: '-m [file path]'
--l;--by-length;"no error"
+-i;--input;Wrong number of collected_words, -i flag should be given as only flag. Correct usage: '-i [file path]'
+-m;--merge;The -f flag was not found in the immediate vicinity of the -m flag. Rum program wit '--help' to see correct usage
+-l;--by-length;''

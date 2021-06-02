@@ -1,7 +1,3 @@
-//
-// Created by mmich on 28.05.2021.
-//
-
 #include <iostream>
 #include <algorithm>
 #include <fstream>

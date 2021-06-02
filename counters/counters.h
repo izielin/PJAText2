@@ -1,7 +1,3 @@
-//
-// Created by mmich on 28.05.2021.
-//
-
 #ifndef PJATEXT2_COUNTERS_H
 #define PJATEXT2_COUNTERS_H
 
@@ -49,4 +45,4 @@ namespace counters {
     };
 }
 
-#endif //PJATEXT2_COUNTERS_H
+#endif

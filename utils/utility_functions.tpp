@@ -1,7 +1,3 @@
-//
-// Created by mmich on 31.05.2021.
-//
-
 #ifndef PJATEXT2_UTILITY_FUNCTIONS_TPP
 #define PJATEXT2_UTILITY_FUNCTIONS_TPP
 
@@ -19,4 +15,4 @@ namespace utility {
     }
 }
 
-#endif // PJATEXT2_ARGUMENT_CONTAINER_TPP
+#endif

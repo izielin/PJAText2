@@ -10,7 +10,11 @@ set(SOURCE_FILES
         collectors/palindromes_collector.cpp
         collectors/passed_words_collector.cpp
         collectors/anagrams_collector.cpp
+        collectors/path_collector.cpp
         utils/check_arguments_correctness.cpp
         utils/utility_functions.cpp
-        utils/invoke_functions.cpp custom_containers/argument_container.cpp custom_containers/enhanced_vector.cpp custom_containers/enhanced_vector.h)
+        utils/invoke_functions.cpp
+        wrappers/arguments_wrapper.cpp
+        wrappers/input_data_wrapper.cpp
+        )
 add_executable(PJAText2 ${SOURCE_FILES})

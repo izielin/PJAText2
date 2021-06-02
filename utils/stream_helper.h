@@ -1,7 +1,3 @@
-//
-// Created by mmich on 30.05.2021.
-//
-
 #ifndef PJATEXT2_STREAM_HELPER_H
 #define PJATEXT2_STREAM_HELPER_H
 
@@ -16,11 +12,9 @@ public:
     ~stream_helper() = default;
 
     template<typename T>
-    friend stream_helper &operator<<(stream_helper &h, T const &t) {
-        h.ostream << t;
-        return h;
-    }
+    friend stream_helper &operator<<(stream_helper &h, T const &t);
 };
 
+#include "stream_helper.tpp"
 
-#endif //PJATEXT2_STREAM_HELPER_H
+#endif

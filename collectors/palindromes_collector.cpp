@@ -1,7 +1,3 @@
-//
-// Created by mmich on 29.05.2021.
-//
-
 #include <iostream>
 #include <algorithm>
 #include <map>
@@ -22,7 +18,7 @@ bool is_palindrome(const std::string &word) {
 
 void
 collectors::palindromes_collector::collect(std::vector<std::string> &input,
-                                           containers::argument_container &container,
+                                           wrappers::arguments_wrapper &container,
                                            int position) {
     auto filtered_words = container.return_words_arguments(position);
 

@@ -1,7 +1,3 @@
-//
-// Created by mmich on 29.05.2021.
-//
-
 #include <iostream>
 #include <algorithm>
 
@@ -44,7 +40,7 @@ auto are_anagram(const std::string &word_1, const std::string &word_2) {
 }
 
 void collectors::anagrams_collector::collect(std::vector<std::string> &input_vector,
-                                             containers::argument_container &container, int position) {
+                                             wrappers::arguments_wrapper &container, int position) {
     std::set<std::string> matching_words;
 
     auto passed = container.return_words_arguments(position);

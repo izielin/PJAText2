@@ -1,7 +1,3 @@
-//
-// Created by mmich on 30.05.2021.
-//
-
 #include <iostream>
 #include <algorithm>
 #include <sstream>
@@ -9,32 +5,33 @@
 
 #include "utility_functions.h"
 
-// trim from start
-void utility::ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
+std::string utility::trim(std::string &s) {
+    size_t first = s.find_first_not_of(' ');
+    if (std::string::npos == first) {
+        return s;
+    }
+    size_t last = s.find_last_not_of(' ');
+    return s.substr(first, (last - first + 1));
 }
 
-// trim from end
-void utility::rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), s.end());
-}
-
-// trim from both ends (in place)
-void utility::trim(std::string &s) {
-    ltrim(s);
-    rtrim(s);
-}
-
-std::ifstream utility::open_file(const std::string &path_to_file) {
+std::ifstream utility::open_file_to_read(const std::string &path_to_file) {
     std::ifstream in(path_to_file);
     try {
         if (!in) throw std::logic_error("Unable to open file, check if file path is correct");
         else return in;
-    } catch (std::logic_error e) {
+    } catch (std::logic_error &e) {
+        std::cerr << e.what() << '\n';
+        exit(-1);
+    }
+
+}
+
+std::ofstream utility::open_file_to_write(const std::string &path_to_file) {
+    std::ofstream out(path_to_file, std::fstream::out | std::fstream::app);
+    try {
+        if (!out) throw std::logic_error("Unable to open file, check if file path is correct");
+        else return out;
+    } catch (std::logic_error &e) {
         std::cerr << e.what() << '\n';
         exit(-1);
     }
@@ -42,36 +39,34 @@ std::ifstream utility::open_file(const std::string &path_to_file) {
 }
 
 
-void utility::load_file_by_words(containers::enhanced_vector &container, const std::string &path_to_file) {
-    if (container.getDataVector().size() != 0) container.getDataVector().clear(); // clear vector if new file was loaded
+void utility::load_file_by_words(wrappers::input_data_wrapper &container, const std::string &path_to_file) {
+    if (!container.getDataVector().empty()) container.getDataVector().clear();
 
-    auto in = open_file(path_to_file);
+    auto in = open_file_to_read(path_to_file);
 
     for (auto line = std::string(); std::getline(in, line);) {
         std::stringstream ss(line);
         for (auto word = std::string(); getline(ss, word, ' ');) {
             if (std::all_of(word.begin(), word.end(), isspace)) continue; // ignore words contains only whitespaces
-            trim(word);
-            container.getDataVector().emplace_back(word);
+            container.getDataVector().emplace_back(trim(word));
         }
     }
     in.close();
 }
 
 void utility::load_file_by_line(std::vector<std::string> &vector, const std::string &path) {
-    auto in = open_file(path);
+    auto in = open_file_to_read(path);
 
     for (auto line = std::string(); std::getline(in, line, ' ');) {
-        if (std::all_of(line.begin(), line.end(), isspace)) continue; // ignore words contains only whitespaces
-        utility::trim(line);
-        vector.emplace_back(line);
+        if (std::all_of(line.begin(), line.end(), isspace)) continue; // ignore lines contains only whitespaces
+        vector.emplace_back(utility::trim(line));
     }
 
     in.close();
 }
 
 void utility::count_lines_in_file(std::string &path_to_file, stream_helper &output_stream) {
-    auto in = open_file(path_to_file);
+    auto in = open_file_to_read(path_to_file);
 
     std::string line;
     long i;
@@ -79,6 +74,18 @@ void utility::count_lines_in_file(std::string &path_to_file, stream_helper &outp
 
     output_stream << "In file: " << path_to_file << " there are " << i << " lines\n";
     in.close();
+}
+
+void utility::merge_files(std::vector<std::string> &to_merge_path, std::string &base_path) {
+    auto out = open_file_to_write(base_path);
+
+    for (auto &item : to_merge_path) {
+        auto in = open_file_to_read(item);
+        out << '\n' << in.rdbuf();
+        in.close();
+    }
+    out.close();
+
 }
 
 

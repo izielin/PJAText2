@@ -1,0 +1,72 @@
+			---- PJAText2 ----
+DESCRIPTION
+	An application launched from the command line which, based on
+    passed flags, returns the text containing the compliant ones
+    information.
+
+FLAGS
+	NAME
+		-f, --file
+	SYNOPSIS
+		-f [file path]
+	DESCRIPTION
+		Calling this flag causes loading data from the given file
+            source. These data will be the basis for the operation of other flags.
+	OPTIONS
+	    -n, --newlines
+                Displays the number of lines from the input file.
+            -d, --digits
+                Displays the number of digits from the input file.
+            -dd, --numbers
+                Displays the number of numbers from the input file.
+                As a number, we define any word that we can holistically
+                interpreted as a real number.
+            -c, --chars
+                Displays the number of characters from the input file.
+            -w, --words
+                Displays the number of words from the input file.
+                We define any sequence of non-white characters as a word.
+                We also take numbers as words.
+            -s, --sorted
+                Displays all words from the input file
+                in alphabetical order.
+            -rs, --reverse-sorted
+                Lists all the words in the input file in order
+                reverse to alphabetical.
+            -l, --by-length
+                Modifies the behavior of the first flag that follows
+                -s or -rs. After using the -l flag, the word order will be
+                defined by their length.
+            -a [words ...], --anagrams [words ...]
+                Displays all anagrams of the words after the flag that
+                appear in the input file. It should be the last one given
+                flag. The number of words is unlimited, also 0.
+            -p [words ...], --palindromes [words ...]
+                It displays all of the words following the flag that are
+                palindromes and appear in the input file. It should be
+                last flag given. The number of words is unlimited, also 0.
+            -o [file path], --output [file path]
+                The result of the program operation will be returned instead of
+                on the console to the file with the path specified after the flag.
+	
+	NAME
+			-i, --input
+	SYNOPSIS
+			-i [file path]
+	DESCRIPTION
+			When this flag is called, subsequent instructions are loaded
+            from a file with the path specified after the flag. This flag should
+            be the only one specified when starting the application
+			
+	NAME
+			-m, --merge
+	SYNOPSIS
+			-f [file path] -m [file paths]
+	DESCRIPTION
+			When this flag is triggered, the files which paths are specified after
+			the -m flag will be merged with the file specified after the -f flag.
+			The presence of the -f flag is mandatory.
+
+            The -m flag should appear immediately after the -f flag.
+    WARNING
+            Using this flag change the contents of the input file.

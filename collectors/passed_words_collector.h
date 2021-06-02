@@ -1,7 +1,3 @@
-//
-// Created by mmich on 29.05.2021.
-//
-
 #ifndef PJATEXT2_PASSED_WORDS_COLLECTOR_H
 #define PJATEXT2_PASSED_WORDS_COLLECTOR_H
 
@@ -19,7 +15,6 @@ namespace collectors {
 
         passed_words_collector() = default;
 
-
         void collect(std::vector<std::string> &vector_searched, int position);
 
         std::set<std::string> &getCollectedWords();
@@ -30,4 +25,4 @@ namespace collectors {
 
 }
 
-#endif //PJATEXT2_PASSED_WORDS_COLLECTOR_H
+#endif

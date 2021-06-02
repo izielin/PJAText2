@@ -1,7 +1,3 @@
-//
-// Created by mmich on 29.05.2021.
-//
-
 #include <iostream>
 
 #include "passed_words_collector.h"
