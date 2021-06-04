@@ -6,15 +6,16 @@ set(CMAKE_CXX_FLAGS "-pedantic")
 
 set(SOURCE_FILES
         main.cpp
-        counters/counters.cpp
-        collectors/palindromes_collector.cpp
-        collectors/passed_words_collector.cpp
-        collectors/anagrams_collector.cpp
-        collectors/path_collector.cpp
-        utils/check_arguments_correctness.cpp
-        utils/utility_functions.cpp
-        utils/invoke_functions.cpp
-        wrappers/arguments_wrapper.cpp
-        wrappers/input_data_wrapper.cpp
-        )
+        src/wrappers/arguments_wrapper.cpp
+        src/wrappers/input_data_wrapper.cpp
+        tools/src/collectors/palindromes_collector.cpp
+        tools/src/collectors/words_collector.cpp
+        tools/src/collectors/anagrams_collector.cpp
+        tools/src/collectors/path_collector.cpp
+        src/utils/check_arguments_correctness.cpp
+        src/utils/utility_functions.cpp
+        src/utils/run_function.cpp
+        tools/src/counters/number_counter.cpp
+        tools/src/counters/digit_counter.cpp
+        tools/src/counters/char_counter.cpp)
 add_executable(PJAText2 ${SOURCE_FILES})
