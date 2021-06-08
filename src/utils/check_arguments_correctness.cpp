@@ -18,7 +18,6 @@
  * @return stream to which the program operation values are to be returned
  */
 auto define_output_stream(std::ofstream &output_file) {
-    auto &arguments_vector = wrappers::arguments_wrapper::getInstance()->args_vector();
     auto it = std::find(arguments_vector.begin(), arguments_vector.end(), "-o");
     if (it != arguments_vector.end()) {
         output_file.open(*(it + 1), std::ios::app | std::ios::out);
@@ -34,9 +33,7 @@ auto define_output_stream(std::ofstream &output_file) {
  * Check if the -i flag was called correctly. If no raise appropriate exception.
  * @param flag_properties - map that stores flags, flag aliases, and error text
  */
-void check_i_flag_conditions(wrappers::flag_properties_map &flag_properties) {
-    auto arguments = wrappers::arguments_wrapper::getInstance();
-    auto &arguments_vector = arguments->args_vector();
+void check_i_flag_conditions(flag_properties_map &flag_properties) {
     if (arguments_vector[0] == "-i") {
         if (arguments_vector.size() == 1) {
             throw std::logic_error("The path to the file was not specified.");
@@ -56,15 +53,13 @@ void check_i_flag_conditions(wrappers::flag_properties_map &flag_properties) {
  * @param flag_properties - map that stores flags, flag aliases, and error text
  * @param position - position of the flag against which we want to search the argument list
  */
-void check_m_flag_conditions(wrappers::flag_properties_map &flag_properties, int position) {
-    auto *arguments = wrappers::arguments_wrapper::getInstance();
-    auto &arguments_vector = arguments->args_vector();
-    if (position + 1 >= arguments_vector.size() || arguments_vector[position + 1][0] == '-')
+void check_m_flag_conditions(flag_properties_map &flag_properties, std::vector<std::string>::iterator position) {
+    if ((position + 1) >= arguments_vector.end() || (position + 1)->front() == '-')
         throw std::logic_error("The path to the output file was not specified. Correct usage: '-m [file path]'");
 
     auto it = arguments->previous_flag_position(position);
     if (it == arguments_vector.rend() || *it != "-f")
-        throw std::logic_error(flag_properties[arguments->args_vector()[position]].second);
+        throw std::logic_error(flag_properties[*position].second);
 }
 
 /**
@@ -73,8 +68,7 @@ void check_m_flag_conditions(wrappers::flag_properties_map &flag_properties, int
  * @param position - position of the flag against which we want to search the argument list
  * @param exist - bool value determine if -f flag was passed
  */
-void check_if_last_flags(wrappers::flag_properties_map flag_properties, int position, bool exist) {
-    auto *arguments = wrappers::arguments_wrapper::getInstance();
+void check_if_last_flags(flag_properties_map flag_properties, int position, bool exist) {
     if (!exist)
         throw std::logic_error("The path to the file was not specified.");
     else {
@@ -89,33 +83,34 @@ void check_if_last_flags(wrappers::flag_properties_map flag_properties, int posi
  * Validates all passed flags
  * @param flag_properties - map that stores flags, flag aliases, and error text
  */
-void check_flags_conditions(wrappers::flag_properties_map &flag_properties) {
-    auto &arguments_vector = wrappers::arguments_wrapper::getInstance()->args_vector();
+void check_flags_conditions(flag_properties_map &flag_properties) {
 
     std::vector<std::string> dependent_on_flag_f = {"-n", "-d", "-dd", "-c", "-w", "-s", "-rs"};
     bool f_flag_exist = false;
-    for (int i = 0; i < arguments_vector.size(); i++) {
-        if (arguments_vector[i][0] != '-') continue;
+    for (auto iterator = arguments_vector.begin(); iterator != arguments_vector.end(); ++iterator) {
+        auto pos = std::distance(arguments_vector.begin(), iterator);
 
-        if (arguments_vector[i] == "-f" || arguments_vector[i] == "-o") {
-            if (arguments_vector.size() < 2 || arguments_vector[i + 1][0] == '-')
-                throw std::logic_error(flag_properties[arguments_vector[i]].second);
+        if (iterator->front() != '-') continue;
+
+        if (*iterator == "-f" || *iterator == "-o") {
+            if (arguments_vector.size() < 2 || (iterator + 1)->front() == '-')
+                throw std::logic_error(flag_properties[*iterator].second);
             else f_flag_exist = true;
 
         } else {
-            auto b = std::find(dependent_on_flag_f.begin(), dependent_on_flag_f.end(), arguments_vector[i]) !=
+            auto b = std::find(dependent_on_flag_f.begin(), dependent_on_flag_f.end(), *iterator) !=
                      dependent_on_flag_f.end();
             if (b) {
                 if (!f_flag_exist)
-                    throw std::logic_error(flag_properties[arguments_vector[i]].second);
+                    throw std::logic_error(flag_properties[*iterator].second);
 
-            } else if (arguments_vector[i] == "-a" || arguments_vector[i] == "-p") {
-                check_if_last_flags(flag_properties, i, f_flag_exist);
+            } else if (*iterator == "-a" || *iterator == "-p") {
+                check_if_last_flags(flag_properties, pos, f_flag_exist);
 
-            } else if (arguments_vector[i] == "-m") {
-                check_m_flag_conditions(flag_properties, i);
+            } else if (*iterator == "-m") {
+                check_m_flag_conditions(flag_properties, iterator);
 
-            } else if (flag_properties.find(arguments_vector[i]) == flag_properties.end()) {
+            } else if (flag_properties.find(*iterator) == flag_properties.end()) {
                 throw std::logic_error("The wrong flag or its alias was specified.\n"
                                        "Check the list of collected_words passed or call the application with the alias "
                                        "'--help' for more information. ");
@@ -138,8 +133,8 @@ void load_manual() {
  * @param path - path to the file to be opened
  * @return map that stores flag properties
  */
-wrappers::flag_properties_map load_flags_properties(std::string &path) {
-    auto map = wrappers::flag_properties_map();
+flag_properties_map load_flags_properties(std::string &path) {
+    auto map = flag_properties_map();
     auto in = utility::open_file_to_read(path);
 
     std::string substr, line;
@@ -161,7 +156,6 @@ wrappers::flag_properties_map load_flags_properties(std::string &path) {
  * Run check flags correctness functionality.
  */
 void check_arguments_correctness() {
-    auto *arguments = wrappers::arguments_wrapper::getInstance();
     std::string path = "../data/flag_properties.txt";
     auto flag_properties = load_flags_properties(path);
 

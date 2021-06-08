@@ -55,9 +55,10 @@ namespace wrappers {
      * @param position - position of the flag against which argument list should be searched
      * @return pointer to position of the last file path before the position of the flag
      */
-    std::vector<std::string>::reverse_iterator arguments_wrapper::reverse_find_path(int position) {
-        auto &&predicate = [](std::string &s) { return (s[0] != '-' && (&s)[-1] == "-f"); };
-        return reverse_find(position, predicate);
+    std::vector<std::string>::reverse_iterator
+    arguments_wrapper::reverse_find_path(std::vector<std::string>::iterator position) {
+        auto predicate = [](std::string &s) { return (s[0] != '-' && (&s)[-1] == "-f"); };
+        return reverse_find(position - 1, predicate);
     }
 
     /**
@@ -77,9 +78,10 @@ namespace wrappers {
      * @param position - position of the flag against which argument list should be searched
      * @return pointer to position of the last flag specified before given position
      */
-    std::vector<std::string>::reverse_iterator arguments_wrapper::previous_flag_position(int position) {
-        auto &&predicate = [](std::string &s) { return (s[0] == '-'); };
-        auto it = reverse_find(position, predicate);
+    std::vector<std::string>::reverse_iterator
+    arguments_wrapper::previous_flag_position(std::vector<std::string>::iterator position) {
+        auto predicate = [](std::string &s) { return (s[0] == '-'); };
+        auto it = reverse_find(position + 1, predicate);
         return it;
     }
 

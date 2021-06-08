@@ -4,6 +4,8 @@
 #include <iostream>
 #include "../stream/stream_helper.h"
 #include "../wrappers/arguments_wrapper.h"
+#include "../../global/global_variables.h"
+#include "../../global/global_aliases.h"
 
 void check_arguments_correctness();
 

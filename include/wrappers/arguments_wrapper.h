@@ -8,9 +8,9 @@
 #include <map>
 #include <set>
 #include <cassert>
+#include "../../global/global_aliases.h"
 
 namespace wrappers {
-    using flag_properties_map = std::map<std::string, std::pair<std::string, std::string>>;
 
     struct arguments_wrapper {
     private:
@@ -36,18 +36,18 @@ namespace wrappers {
         ~arguments_wrapper();
 
         template<typename F>
-        inline auto reverse_find(int index, F &&predicate);
+        inline auto reverse_find(iterator position, F &predicate);
 
         template<typename F>
-        inline auto forward_find(int index, F &&predicate);
+        inline auto forward_find(int index, F &predicate);
 
         void adjust_arguments(flag_properties_map &flag_properties);
 
-        std::vector<std::string>::reverse_iterator reverse_find_path(int position);
+        reverse_iterator reverse_find_path(iterator position);
 
-        std::vector<std::string>::iterator next_flag_position(int position);
+        iterator next_flag_position(int position);
 
-        std::vector<std::string>::reverse_iterator previous_flag_position(int position);
+        reverse_iterator previous_flag_position(iterator position);
 
         std::set<std::string> get_words(int position);
 

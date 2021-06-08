@@ -17,5 +17,5 @@ set(SOURCE_FILES
         src/utils/run_function.cpp
         tools/src/counters/number_counter.cpp
         tools/src/counters/digit_counter.cpp
-        tools/src/counters/char_counter.cpp)
+        tools/src/counters/char_counter.cpp global/global_variables.h global/global_aliases.h)
 add_executable(PJAText2 ${SOURCE_FILES})

@@ -5,6 +5,7 @@
 #include <vector>
 #include "../stream/stream_helper.h"
 #include "../wrappers/arguments_wrapper.h"
+#include "../../global/global_variables.h"
 
 void run(stream_helper &output_stream);
 
